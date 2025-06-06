@@ -6,6 +6,7 @@ import (
 	"dt-storage/td-storage/model"
 	"flag"
 	"fmt"
+	"github.com/panjf2000/ants/v2"
 	"github.com/zeromicro/go-zero/core/conf"
 	"math/rand"
 	"strconv"
@@ -20,14 +21,25 @@ func main() {
 	var c Config
 	conf.MustLoad(*configFile, &c)
 
+	fmt.Println(c)
+
 	svcCtx := NewServiceContext(c)
+
+	if c.AllLimit > 0 {
+		svcCtx.DataAntsPool, _ = ants.NewPoolWithFunc(c.AllLimit, func(req interface{}) {
+			data, _ := req.(int)
+			svcCtx.Idata(data)
+		})
+	}
+
 	zero := 1
 	for {
-
 		for i := 0; i < svcCtx.Config.Limit; i++ {
-
-			// 协程写入
-			go Idata(svcCtx, i)
+			if svcCtx.Config.AllLimit > 0 {
+				_ = svcCtx.DataAntsPool.Invoke(i)
+			} else {
+				go svcCtx.Idata(i)
+			}
 		}
 
 		fmt.Println(fmt.Sprintf("并发数%d已发送完第%d次", svcCtx.Config.Limit, zero))
@@ -40,7 +52,7 @@ func main() {
 }
 
 // 随机 写入数据
-func Idata(svcCtx *ServiceContext, i int) {
+func (l ServiceContext) Idata(i int) {
 
 	// 随机数据
 	numberRandom := RandomDecimal("0", 300)
@@ -56,9 +68,9 @@ func Idata(svcCtx *ServiceContext, i int) {
 	}
 
 	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	err := monitor.Insert(ctx, svcCtx.Taos, tddb)
+	err := monitor.Insert(ctx, l.Taos, tddb)
 
-	if svcCtx.Config.LoggerNumber == 1 {
+	if l.Config.LoggerNumber == 1 {
 		fmt.Println(fmt.Sprintf("发送一条数据:%s ", monitor))
 	}
 

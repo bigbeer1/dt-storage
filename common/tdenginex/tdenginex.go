@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/taosdata/driver-go/v3/taosRestful"
+	//_ "github.com/taosdata/driver-go/v3/taosSql"
 	_ "github.com/taosdata/driver-go/v3/taosWS"
-	"log"
 	"reflect"
 	"time"
 )
@@ -49,13 +49,6 @@ func (t TDengineConfig) NewTDengineManager() (taos *sql.DB) {
 		}
 		return taos
 	case 3:
-		taosUri := fmt.Sprintf("%s:%v@tcp(%v:%v)/", t.UserName, t.Pass, t.Host, t.Port)
-		taos, err := sql.Open("taosSql", taosUri)
-		if err != nil {
-			log.Fatalln("TDengine连接失败: " + err.Error())
-			return nil
-		}
-		return taos
 
 	default:
 		fmt.Println("td连接类型错误不是1:websocket 2:http  3:sql/tcp:")

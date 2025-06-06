@@ -11,5 +11,7 @@ type Config struct {
 
 	Limit int `json:"Limit"` // 协程并发数
 
+	AllLimit int `json:"AllLimit"` // 总协程数
+
 	TimeNext int64 `json:"TimeNext"` // 间隔毫秒
 }

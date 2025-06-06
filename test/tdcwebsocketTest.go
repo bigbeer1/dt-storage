@@ -18,5 +18,11 @@ func main() {
 		log.Fatalln("Failed to connect to " + taosDSN + "; ErrMessage: " + err.Error())
 	}
 	fmt.Println("Connected to " + taosDSN + " successfully.")
-	defer taos.Close()
+
+	err = taos.Ping()
+	if err != nil {
+
+		log.Fatalln("Failed to connect to " + taosDSN + "; ErrMessage: " + err.Error())
+	}
+
 }
