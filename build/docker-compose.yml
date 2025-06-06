@@ -46,9 +46,10 @@ services:
     networks:
       dt_net:
         ipv4_address: 172.20.98.12
+    volumes: # 数据卷，目录挂载
+      - ../deploy/app/td-storage.yaml:/app/td-storage.yaml
     logging:
       driver: "json-file"
       options:
         max-size: "50m"      # 日志文件大小
         max-file: "1"        # 日志的数量
-    tty: true
