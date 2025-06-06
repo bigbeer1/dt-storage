@@ -1,0 +1,14 @@
+TimeNext: 1  #间隔秒。
+
+Limit: 100 # 协程并发数
+
+AllLimit: -1 # 总协程数控制。 -1 不限制
+
+LoggerNumber: 0 #0不打印日志 1打印日志
+
+TDengineConfig:
+  Host: "taosnode"
+  Prot: "6041"
+  UserName: root
+  Pass: taosdata
+  ConFun: 1  #1:websocket 2:http  3:sql/tcp

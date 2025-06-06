@@ -38,3 +38,17 @@ services:
       options:
         max-size: "50m"      # 日志文件大小
         max-file: "1"        # 日志的数量
+
+  dtx-test: # 服务名称
+    image: dtx-test1:latest # 创建容器时所需的镜像
+    container_name: dtx-test # 容器名称
+    restart: always
+    networks:
+      dt_net:
+        ipv4_address: 172.20.98.12
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"      # 日志文件大小
+        max-file: "1"        # 日志的数量
+    tty: true

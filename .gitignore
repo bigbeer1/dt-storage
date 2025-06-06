@@ -1,5 +1,5 @@
-/deploy/golang/manage/out/
-/deploy/golang/twy/out/
+/deploy/app/manage/out/
+/deploy/app/twy/out/
 /bin/*/*.exe
 /bin/*/*/*.exe
 /bin/*/*/*/*.exe

@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/taosdata/driver-go/v3/taosRestful"
-	//_ "github.com/taosdata/driver-go/v3/taosSql"
 	_ "github.com/taosdata/driver-go/v3/taosWS"
 	"reflect"
 	"time"
