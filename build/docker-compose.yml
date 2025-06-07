@@ -53,3 +53,32 @@ services:
       options:
         max-size: "50m"      # 日志文件大小
         max-file: "1"        # 日志的数量
+
+
+  portainer:
+    image: portainer/portainer:1.25.0
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../data/portainer/data:/data
+      - ../deploy/portainer/public:/public
+    ports:
+      - 9001:9000
+    privileged: true
+    restart: always
+    networks:
+      - dt_net
+  grafana:
+    image: grafana/grafana:8.0.6
+    container_name: grafana
+    environment:
+      GF_INSTALL_PLUGINS: https://www.taosdata.com/assets-download/grafana-plugin/tdengine-datasource.zip;tdengine-datasource
+    hostname: grafana
+    user: root
+    restart: always
+    volumes:
+      - ../data/grafana/data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - dt_net
